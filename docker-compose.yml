@@ -1,0 +1,26 @@
+pogomap:
+  image: yongjhih/pokemon-go-map
+  ports:
+   - "5000:5000"
+  volumes:
+   - ./data:/usr/src/app/data
+  links:
+   - mysql
+  #command: ['-u', 'USER', '-p', 'PASS', '-l', 'LAT,LNG', '-k', 'KEY', '--db-type', 'mysql', '--db-name', 'pogomap', '--db-user', 'pogomap', '--db-pass', 'pogomap', '--db-host', 'mysql']
+  command: ['--db-type', 'mysql', '--db-name', 'pogomap', '--db-user', 'pogomap', '--db-pass', 'pogomap', '--db-host', 'mysql']
+
+mysql:
+    image: mysql
+    volumes_from:
+        - mysql-data
+    environment:
+        - MYSQL_ROOT_PASSWORD=pogomap
+        - MYSQL_DATABASE=pogomap
+        - MYSQL_USER=pogomap
+        - MYSQL_PASSWORD=pogomap
+
+mysql-data:
+    image: mysql
+    volumes:
+        - /var/lib/mysql
+    entrypoint: /bin/true
